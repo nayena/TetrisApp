@@ -1,4 +1,4 @@
-name = "tetris-app"
+name = "tetrisapp"
 main = "worker/index.ts"
 compatibility_date = "2025-03-01"
 
