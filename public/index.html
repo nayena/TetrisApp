@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tetris Duel</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>⛊ Tetris Duel</h1>
+    <div id="room-code-badge" class="room-code-badge hidden">
+      Room <span id="room-code-text"></span>
+      <button id="copy-link-btn" title="Copy invite link">Copy Link</button>
+    </div>
+  </header>
+
+  <!-- Lobby: create or join a room -->
+  <section id="lobby" class="screen">
+    <div class="card">
+      <h2>Play Two-Player Tetris</h2>
+      <label>
+        Nickname
+        <input id="nickname-input" maxlength="20" placeholder="Player" />
+      </label>
+
+      <div class="lobby-actions">
+        <button id="create-room-btn" class="primary">Create Room</button>
+        <div class="or">or</div>
+        <label>
+          Join with code
+          <div class="join-row">
+            <input id="join-code-input" maxlength="6" placeholder="ABC123" style="text-transform:uppercase" />
+            <button id="join-room-btn">Join</button>
+          </div>
+        </label>
+      </div>
+      <p id="lobby-error" class="error hidden"></p>
+    </div>
+  </section>
+
+  <!-- Waiting room -->
+  <section id="waiting" class="screen hidden">
+    <div class="card">
+      <h2>Waiting for opponent…</h2>
+      <p>Share this link so a friend can join:</p>
+      <div class="share-row">
+        <input id="share-link-input" readonly />
+        <button id="share-copy-btn">Copy</button>
+      </div>
+      <p class="hint">Room stays open until a second player connects.</p>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section id="game" class="screen hidden">
+    <div class="boards">
+      <div class="board-panel">
+        <div class="player-info">
+          <span id="my-name">You</span>
+          <span class="stats">
+            Score <b id="my-score">0</b> · Lines <b id="my-lines">0</b> · Lv <b id="my-level">1</b>
+          </span>
+        </div>
+        <div class="board-with-side">
+          <canvas id="my-canvas" width="300" height="600"></canvas>
+          <div class="side-panel">
+            <div class="mini-box">
+              <div class="mini-label">Hold</div>
+              <canvas id="hold-canvas" width="80" height="60"></canvas>
+            </div>
+            <div class="mini-box">
+              <div class="mini-label">Next</div>
+              <canvas id="next-canvas" width="80" height="220"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="board-panel opponent">
+        <div class="player-info">
+          <span id="opp-name">Opponent</span>
+          <span class="stats">
+            Score <b id="opp-score">0</b> · Lines <b id="opp-lines">0</b>
+          </span>
+        </div>
+        <canvas id="opp-canvas" width="300" height="600"></canvas>
+      </div>
+    </div>
+
+    <p class="controls-hint">
+      ← → move · ↓ soft drop · ↑ / X rotate CW · Z rotate CCW · Space hard drop · C hold
+    </p>
+  </section>
+
+  <!-- Countdown overlay -->
+  <div id="countdown-overlay" class="overlay hidden">
+    <div id="countdown-number">3</div>
+  </div>
+
+  <!-- Game over overlay -->
+  <div id="gameover-overlay" class="overlay hidden">
+    <div class="card">
+      <h2 id="gameover-title">Game Over</h2>
+      <p id="gameover-detail"></p>
+      <button id="rematch-btn" class="primary">Request Rematch</button>
+      <p id="rematch-status" class="hint"></p>
+    </div>
+  </div>
+
+  <!-- Opponent disconnected banner -->
+  <div id="disconnect-banner" class="banner hidden">Opponent disconnected.</div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

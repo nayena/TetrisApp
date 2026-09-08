@@ -1,0 +1,16 @@
+{
+  "name": "tetris-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Two-player competitive Tetris over Cloudflare Workers + Durable Objects",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250906.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.0.0"
+  }
+}

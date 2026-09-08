@@ -1,0 +1,196 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0d12;
+  --panel: #161922;
+  --panel-2: #1e2230;
+  --text: #e8eaf0;
+  --muted: #8b91a3;
+  --accent: #6c8cff;
+  --accent-2: #4dd8e6;
+  --danger: #e64d4d;
+  --border: #2a2f40;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -20%, #1a1f2e, var(--bg) 60%);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+.topbar h1 { font-size: 1.25rem; margin: 0; letter-spacing: 0.02em; }
+
+.room-code-badge {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.room-code-badge span { font-weight: 700; letter-spacing: 0.08em; color: var(--accent-2); }
+
+.hidden { display: none !important; }
+
+.screen {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.card h2 { margin-top: 0; }
+
+label {
+  display: block;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+input {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  transition: transform 0.05s ease, background 0.15s ease;
+}
+button:hover { background: #262c3d; }
+button:active { transform: scale(0.97); }
+button.primary {
+  background: linear-gradient(135deg, var(--accent), #8a6cff);
+  border: none;
+  color: white;
+  font-weight: 600;
+  width: 100%;
+  padding: 0.7rem 1rem;
+}
+
+.lobby-actions { margin-top: 1.5rem; }
+.or { color: var(--muted); margin: 1rem 0; font-size: 0.8rem; text-transform: uppercase; }
+.join-row { display: flex; gap: 0.5rem; }
+.join-row input { text-align: center; letter-spacing: 0.15em; }
+
+.error { color: var(--danger); font-size: 0.85rem; }
+
+.share-row { display: flex; gap: 0.5rem; margin: 1rem 0; }
+.hint { color: var(--muted); font-size: 0.8rem; }
+
+.boards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.board-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.board-panel.opponent { opacity: 0.92; }
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.player-info .stats { color: var(--muted); font-size: 0.8rem; }
+.player-info b { color: var(--text); }
+
+.board-with-side { display: flex; gap: 0.75rem; }
+
+canvas {
+  background: #111318;
+  border-radius: 6px;
+  display: block;
+}
+
+.side-panel { display: flex; flex-direction: column; gap: 0.75rem; }
+.mini-box {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem;
+  text-align: center;
+}
+.mini-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; margin-bottom: 0.25rem; }
+
+.controls-hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 7, 10, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+#countdown-number {
+  font-size: 8rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  text-shadow: 0 0 40px rgba(77, 216, 230, 0.6);
+}
+
+.banner {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--danger);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 5;
+}
