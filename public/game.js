@@ -87,15 +87,16 @@ const BASE_SHAPES = {
   ],
 };
 
+// Cabinet-glass pastel palette — soft candy tones, each with its own bloom.
 export const COLORS = {
-  I: "#4dd8e6",
-  O: "#e6d84d",
-  T: "#b24de6",
-  S: "#4de664",
-  Z: "#e64d4d",
-  J: "#4d6fe6",
-  L: "#e6924d",
-  G: "#5a5a5a", // garbage
+  I: "#7bd9c9", // teal
+  O: "#f6d57d", // yellow
+  T: "#b79ce8", // lavender
+  S: "#f2a48f", // peach
+  Z: "#ee8888", // coral
+  J: "#8fb7ea", // sky blue
+  L: "#f0ac68", // orange
+  G: "#d9d2c1", // garbage — muted stone
 };
 
 function rotateCW(m) {
@@ -414,11 +415,16 @@ export class Game {
 }
 
 // ---------------------------------------------------------------------------
-// Rendering
+// Rendering — "Arcade Marquee": cream cabinet-glass well, candy-glass blocks
+// with a soft bloom, thin warm gridlines.
 // ---------------------------------------------------------------------------
+const WELL_BG = "#faf6ee";
+const GRID_LINE = "rgba(43, 38, 32, 0.07)";
+const GAP = 3; // px gap between cells, gives each block its own glass tile
+
 export function drawBoard(ctx, board, cellSize, activePiece) {
   const { width, height } = ctx.canvas;
-  ctx.fillStyle = "#111318";
+  ctx.fillStyle = WELL_BG;
   ctx.fillRect(0, 0, width, height);
 
   for (let r = 0; r < ROWS; r++) {
@@ -446,39 +452,78 @@ export function drawBoard(ctx, board, cellSize, activePiece) {
   }
 }
 
+function roundRectPath(ctx, x, y, w, h, radius) {
+  const r = Math.min(radius, w / 2, h / 2);
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(x, y, w, h, r);
+  } else {
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+}
+
 function drawGrid(ctx, c, r, size) {
-  ctx.strokeStyle = "rgba(255,255,255,0.04)";
-  ctx.strokeRect(c * size, r * size, size, size);
+  const inset = GAP / 2;
+  ctx.strokeStyle = GRID_LINE;
+  ctx.lineWidth = 1;
+  roundRectPath(ctx, c * size + inset, r * size + inset, size - GAP, size - GAP, 4);
+  ctx.stroke();
 }
 
 function drawCell(ctx, c, r, size, color, ghost = false) {
   if (r < 0) return;
-  const x = c * size;
-  const y = r * size;
+  const inset = GAP / 2;
+  const x = c * size + inset;
+  const y = r * size + inset;
+  const w = size - GAP;
+  const h = size - GAP;
+  const radius = size * 0.22;
+
   if (ghost) {
+    roundRectPath(ctx, x + 1.5, y + 1.5, w - 3, h - 3, radius);
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
-    ctx.strokeRect(x + 2, y + 2, size - 4, size - 4);
+    ctx.setLineDash([4, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
     return;
   }
+
+  // Bloom: a soft halo behind the tile, like backlit cabinet glass.
+  ctx.save();
+  ctx.shadowColor = color;
+  ctx.shadowBlur = size * 0.35;
+  roundRectPath(ctx, x, y, w, h, radius);
   ctx.fillStyle = color;
-  ctx.fillRect(x, y, size, size);
-  ctx.strokeStyle = "rgba(0,0,0,0.35)";
-  ctx.strokeRect(x + 0.5, y + 0.5, size - 1, size - 1);
+  ctx.fill();
+  ctx.restore();
+
+  // Glass highlight along the top edge.
+  const grad = ctx.createLinearGradient(x, y, x, y + h);
+  grad.addColorStop(0, "rgba(255,255,255,0.55)");
+  grad.addColorStop(0.4, "rgba(255,255,255,0)");
+  grad.addColorStop(1, "rgba(0,0,0,0.08)");
+  roundRectPath(ctx, x, y, w, h, radius);
+  ctx.fillStyle = grad;
+  ctx.fill();
 }
 
 /** Draw one small piece glyph inside ctx at vertical slot `slot` (0-based). */
 export function drawMiniPiece(ctx, type, slot = 0, slotHeight = 56) {
   if (!type) return;
-  const size = 16;
+  const size = 17;
   const grid = ROTATIONS[type][0];
   const offX = type === "I" || type === "O" ? 0.5 : 1;
   const offY = slot * slotHeight + slotHeight / 2 - size * 1.2;
   for (let r = 0; r < grid.length; r++) {
     for (let c = 0; c < grid[r].length; c++) {
       if (grid[r][c]) {
-        ctx.fillStyle = COLORS[type];
-        ctx.fillRect((c + offX) * size, offY + r * size, size - 1, size - 1);
+        drawCell(ctx, c + offX, r + offY / size, size, COLORS[type]);
       }
     }
   }

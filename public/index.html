@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tetris Duel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -19,6 +25,10 @@
   <section id="lobby" class="screen">
     <div class="card">
       <h2>Play Two-Player Tetris</h2>
+      <p class="lobby-tagline">
+        Cabinet-glass pastel, side-by-side boards, one shared piece sequence.
+        Invite a friend and see who tops out first.
+      </p>
       <label>
         Nickname
         <input id="nickname-input" maxlength="20" placeholder="Player" />
@@ -58,20 +68,29 @@
       <div class="board-panel">
         <div class="player-info">
           <span id="my-name">You</span>
-          <span class="stats">
-            Score <b id="my-score">0</b> · Lines <b id="my-lines">0</b> · Lv <b id="my-level">1</b>
-          </span>
         </div>
         <div class="board-with-side">
           <canvas id="my-canvas" width="300" height="600"></canvas>
           <div class="side-panel">
-            <div class="mini-box">
-              <div class="mini-label">Hold</div>
-              <canvas id="hold-canvas" width="80" height="60"></canvas>
+            <div>
+              <div class="stat-label">Score</div>
+              <div class="stat-value" id="my-score">0</div>
+            </div>
+            <div>
+              <div class="stat-label">Level</div>
+              <div class="stat-value" id="my-level">1</div>
+            </div>
+            <div>
+              <div class="stat-label">Lines cleared</div>
+              <div class="stat-value" id="my-lines">0</div>
             </div>
             <div class="mini-box">
-              <div class="mini-label">Next</div>
-              <canvas id="next-canvas" width="80" height="220"></canvas>
+              <div class="stat-label">Up next</div>
+              <canvas id="next-canvas" width="110" height="200"></canvas>
+            </div>
+            <div class="mini-box">
+              <div class="stat-label">Held</div>
+              <canvas id="hold-canvas" width="110" height="50"></canvas>
             </div>
           </div>
         </div>
